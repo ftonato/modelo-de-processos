@@ -1,8 +1,12 @@
-var path = '/categoria';
+const path = '/nivelCapacidade';
+
+function montaJson(body) {
+    return { nome: body.nome, descricao: body.descricao, sigla: body.sigla };
+}
 
 module.exports = {
     init: function (db, app) {
-        var cat = db.ref('/categoria');
+        var cat = db.ref('/nivelCap');
 
         app.get(path, function (req, res) {
             cat.once('value', function (snapshot) {
@@ -23,7 +27,7 @@ module.exports = {
         });
 
         app.post(path, function (req, res) {
-            cat.push({ nome: req.body.nome }).then((snap) => {
+            cat.push(montaJson(req.body)).then((snap) => {
                 res.status(201).send(snap.key);
             });
         });
@@ -33,7 +37,7 @@ module.exports = {
                 if (!snap.hasChild(req.params.key)) {
                     res.status(404).send();
                 } else {
-                    cat.child(req.params.key).set({ nome: req.body.nome }).then(() => res.status(200).send())
+                    cat.child(req.params.key).set(montaJson(req.body)).then(() => res.status(200).send())
                 }
             });
         });
