@@ -109,21 +109,9 @@
 
       listarCategorias() {
         this.$http.get('http://localhost:3000/categoria').then((req) => {
-          let _data = req.data;
-          //console.log(_data);
-          let itens = []; // lista de itens
-
-          for (let prop in _data) {
-            let id = prop;
-            let val = _data[prop]
-            for (let propChild in val) {
-              //console.log('id: ', id, ' ~> propChild: ', propChild, ' ~> valChild: ', val[propChild]);
-              itens.push({'id': id, 'nome': val[propChild]});
-            }
-          }
 
           // adiciona os itens das categorias p/ a lista de categorias
-          this.categorias = itens;
+          this.categorias = req.data;
         });
 
       },
