@@ -1,10 +1,11 @@
 module.exports = {
     init: function (db, app, path, refName, montaJson) {
+        var transform = require('./../transform.js');
         var ref = db.ref(refName);
 
         app.get(path, function (req, res) {
             ref.once('value', function (snapshot) {
-                res.send(snapshot.val());
+                res.send(transform.toArray(snapshot.val()));
             });
         });
 
