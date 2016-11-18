@@ -1,127 +1,73 @@
-# modelo-de-processos
+# Modelo de Processos
 
-Acessso a API
-=============
+Trabalho da cadeira de Modelos de Melhoria de Processo de Software.
 
-Padrão da API
---------------
-`GET /<modelo>` Busca todas os objetos do modelo
-```javascript
-{ id: "chave", ... }
-```
+Uma ferramenta desenvolvida para gerenciar informações de um modelo de referência de processo de software.
 
-`GET /<modelo>/<chave>` Busca um objecto especifico do modelo
-```javascript
-{ ... }
-```
+## Instalação
 
-`POST /<modelo>` Cria um objecto do modelo e retorna a chave criada
-```javascript
-// request
-{ ... }
-// response
-"<chave>"
+``` bash
+# Clone o repositório
+git clone git@github.com:ftonato/modelo-de-processos.git && cd modelo-de-processos
+
+# Instalar as dependências
+cd backend && npm install
+cd frontend && npm install
+
+# Servidor backend ~ http://localhost:3000/
+npm run dev
+
+# Servidor frontend com 'hot reload' ~ http://localhost:8080/
+npm run dev
 ```
 
-`PUT /<modelo>/<chave>` Atualiza um objecto do modelo
-```javascript
-// request
-{ ... }
-```
+## Descrição do projeto
 
-`DELETE /<modelo>/<chave>` Deleta um objecto do modelo
+### Objetivo
+Desenvolver uma ferramenta que permita cadastrar e visualizar informações de um modelo de referência de processo de software.
 
-Modelos
-------------
-#### Categoria
-```javascript
-{
-    nome: string
-}
-```
-#### NivelCapacidade
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string
-}
-```
-#### NivelMaturidade
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string
-}
-```
-#### MetasGenericas
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string,
-    nivelCap: string // chave do modelo NivelCapacidade
-}
-```
-#### ProdutoTrabalho
-```javascript
-{
-    nome: string
-    // vai ser implementado o upload de arquivos aqui
-}
-```
-#### PraticaEspecifica
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string,
-    produtoTrab: [ // chaves do modelo ProdutoTrabalho
-        string,
-        string
-    ]
-}
-```
-#### Modelo
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string,
-    areaProc: [ // chaves do modelo AreaProcesso
-        string,
-        string
-    ]
-    metasGen: [ // chaves do modelo MetasGenericas
-        string,
-        string
-    ]
-}
-```
-#### MetaEspecifica
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string,
-    praticasEspec: [ // chaves do modelo PraticaEspecifica
-        string,
-        string
-    ]
-}
-```
-#### AreaProcesso
-```javascript
-{
-    nome: string,
-    descricao: string,
-    sigla: string,
-    categoria: string,  // chave do modelo categoria
-    nivelMatu: string,  // chave do modelo NivelMaturidade
-    metasEspec: [       // chaves do modelo MetaEspecifica
-        string,
-        string
-    ]
-}
-```
+### Funcionalidades básicas
+A ferramenta deve permitir registrar informações relativas a um modelo de referência, como áreas de processo, metas específicas, níveis de maturidade e demais componentes do modelo.
+
+A figura abaixo apresenta um modelo de domínio da ferramenta contendo as principais classes de domínio.
+
+![Figura 1](projeto-figura1.png)
+
+As funcionalidades esperadas são:
+- **Cadastro do Modelo de Referência (ex: CMMI, MPS.BR, ZZZ, etc)**
+Informações gerais sobre o modelo.
+
+- **Cadastro de Áreas de Processo**
+Permite cadastrar as áreas de processo do modelo. As áreas de processos podem ser estar agrupadas em Categorias e também relacionadas a níveis de maturidade.
+
+- **Cadastro de Categorias de Processo**
+
+- **Cadastro de Metas Específicas e Práticas Específicas**
+Permite cadastrar metas e práticas específicas para cada área de processo, contendo dados como sigla, nome e descrição.
+
+- **Cadastro de Nível de Maturidade**
+Informações sobre os níveis de maturidade do modelo e quais áreas de processos fazem parte de cada nível.
+
+- **Níveis de Capacidade**
+Permite cadastrar os níveis de capacidade do modelo.
+
+- **Cadastro de Metas Genéricas**
+Permite cadastrar metas genéricas do modelo ligadas a níveis de capacidade do mesmo.
+
+- **Cadastro e Upload de Produtos de Trabalho Típicos**
+Permite armazenar os templates para os produtos de trabalho típicos ligados a práticas específicas. Um produto de trabalho típico pode ser usado em mais de uma prática específica. A ferramenta deve fazer um upload do template do PT armazenando o mesmo.
+
+- **Visualização de Informações do Modelo**
+A ferramenta deve oferecer uma funcionalidade que permita ao usuário visualizar as informações de cada modelo, mostrando as áreas de processo, metas, etc.
+
+- **Exportação das Informações**
+Permitir exportar os dados do modelo para um formato .PDF ou .DOCX.
+
+### Validação da Ferramenta
+Para testar a ferramenta devem ser cadastrados pelo menos as informações referentes ao CMMI e ao MPS.BR.
+
+### Tecnologia
+Pode ser utilizada qualquer tecnologia. A preferência é por uma ferramenta web, disponível para acesso pela internet.
+
+## License
+Este projeto é licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
