@@ -32,18 +32,17 @@ function montaJson(reqBody) {
         retVal.produtoTrab[e] = true;
     });
 
-    console.log(retVal);
-
     return retVal;
 }
 
 module.exports = {
     init: function (db, app) {
         var ref = db.ref('/praticasEspec');
+        var transform = require('./../transform.js');
 
         app.get(path, function (req, res) {
             ref.once('value', function (snapshot) {
-                res.send(snapshot.val());
+                res.send(transform.toArray(snapshot.val()));
             });
         });
 
