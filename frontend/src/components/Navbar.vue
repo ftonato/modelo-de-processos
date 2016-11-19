@@ -1,16 +1,3 @@
-<!-- <template>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <a class="navbar-brand" href="#">BIRL</a>
-    <ul class="nav navbar-nav">
-      <li>
-        <a v-link="{ name: 'dashboard' }">Dashboard</a>
-      </li>
-      <li>
-        <a v-link="{ name: 'users' }">Usuários</a>
-      </li>
-    </ul>
-  </nav>
-</template> -->
 <template>
   <div class="navbar navbar-default navbar-static-top">
       <div class="container">
@@ -24,24 +11,27 @@
             <span class="icon-bar">
             </span>
           </button>
-          <a class="navbar-brand" href="../index.html">
+          <a class="navbar-brand" href="#/">
             <span>MP</span>
           </a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-ex-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="modelo.html">Modelo</a>
-            </li>
-            <li>
-              <a href="nivel_capacidade.html">Nível Capacidade</a>
-            </li>
+
+            <router-link active-class="active" tag="li" to="/b">
+              <a>Modelo</a>
+            </router-link>
+            <router-link active-class="active" tag="li" to="/c">
+              <a>Nível Capacidade</a>
+            </router-link>
+
             <li>
               <a href="nivel_maturidade.html">Nível Maturidade</a>
             </li>
-            <li>
-              <a href="categoria.html">Categoria</a>
-            </li>
+
+            <router-link active-class="active" tag="li" to="/categoria">
+              <a>Categoria</a>
+            </router-link>
             <li>
               <a href="produto_trabalho.html">Produtos Trabalho</a>
             </li>
@@ -50,3 +40,9 @@
       </div>
     </div> <!-- / .navbar -->
 </template>
+
+<script>
+
+  export default { }
+
+</script>
