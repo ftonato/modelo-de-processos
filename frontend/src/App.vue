@@ -1,31 +1,19 @@
 <template>
   <div id="app">
 
+    <div class="sidebar">
+      <router-view name="sidebar"></router-view>
+    </div>
 
-    <!-- Navbar -->
-    <Navbar></Navbar>
-
-    <!-- Lista de Categorias -->
-    <Categoria></Categoria>
+    <div class="main">
+      <router-view></router-view>
+    </div>
 
   </div>
 </template>
 
 <script>
 
-  import Categoria from './components/Categoria.vue';
-  import Navbar from './components/Navbar.vue';
+  export default { }
 
-  export default {
-  //name: 'app',
-  components: {
-    Categoria, Navbar
-  },
-  data () {
-
-    return {
-      msg: 'Hello App.js',
-    }
-  },
-}
 </script>
