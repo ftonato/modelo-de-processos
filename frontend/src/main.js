@@ -7,9 +7,8 @@ import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
 import Modelo from './components/Modelo.vue';
+import NivelMaturidade from './components/NivelMaturidade.vue';
 import A from './components/A.vue';
-import B from './components/B.vue';
-import C from './components/C.vue';
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -24,35 +23,34 @@ const router = new VueRouter({
       {
         path: '/',
         components: {
-          default: A,//require('./components/A.vue'),
-          sidebar: Navbar//require('./components/Navbar.vue')
+          default: A,
+          sidebar: Navbar
         }
       },
       {
-        path: '/b',
+        path: '/nivel-maturidade',
         components: {
-          default: B,//require('./components/B.vue'),
-          sidebar: Navbar//require('./components/Navbar.vue')
+          default: NivelMaturidade,
+          sidebar: Navbar
         }
       },
       {
         path: '/categoria',
         components: {
-          default: Categoria,//require('./components/Categoria.vue'),
-          sidebar: Navbar//require('./components/Navbar.vue')
+          default: Categoria,
+          sidebar: Navbar
         }
       },
       {
         path: '/modelo',
         components: {
-          default: Modelo,//require('./components/Categoria.vue'),
-          sidebar: Navbar//require('./components/Navbar.vue')
+          default: Modelo,
+          sidebar: Navbar
         }
       }
     ]
 })
 
-// router.start(App, '#app')
 new Vue({
   el: '#app',
   router,
