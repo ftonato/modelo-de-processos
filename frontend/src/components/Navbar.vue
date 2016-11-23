@@ -18,10 +18,10 @@
         <div class="collapse navbar-collapse" id="navbar-ex-collapse">
           <ul class="nav navbar-nav navbar-right">
 
-            <router-link active-class="active" tag="li" to="/b">
+            <router-link active-class="active" tag="li" to="/modelo">
               <a>Modelo</a>
             </router-link>
-            <router-link active-class="active" tag="li" to="/c">
+            <router-link active-class="active" tag="li" to="/b">
               <a>Nível Capacidade</a>
             </router-link>
 

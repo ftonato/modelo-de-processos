@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
+import Modelo from './components/Modelo.vue';
 import A from './components/A.vue';
 import B from './components/B.vue';
 import C from './components/C.vue';
@@ -35,16 +36,16 @@ const router = new VueRouter({
         }
       },
       {
-        path: '/c',
+        path: '/categoria',
         components: {
-          default: C,//require('./components/C.vue'),
+          default: Categoria,//require('./components/Categoria.vue'),
           sidebar: Navbar//require('./components/Navbar.vue')
         }
       },
       {
-        path: '/categoria',
+        path: '/modelo',
         components: {
-          default: Categoria,//require('./components/Categoria.vue'),
+          default: Modelo,//require('./components/Categoria.vue'),
           sidebar: Navbar//require('./components/Navbar.vue')
         }
       }
