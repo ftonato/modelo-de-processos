@@ -13,7 +13,7 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
         notGoodCallback('areas de processo não informadas');
     } else {
         db.ref('/areaProc').once('value', function (snap) {
-            for (var i = 0; i < reqBody.areaProc.length; ++i) {
+            for (var i = 0; i < reqBody.areaProc.length; i++) {
                 if (!snap.hasChild(reqBody.areaProc[i])) {
                     notGoodCallback('area de processo não informada');
                     return;
@@ -21,7 +21,7 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
             }
 
             db.ref('/metasGen').once('value', function (snap) {
-                for (var i = 0; i < reqBody.metasGen.length; ++i) {
+                for (var i = 0; i < reqBody.metasGen.length; i++) {
                     if (!snap.hasChild(reqBody.metasGen[i])) {
                         notGoodCallback('meta generica não informada');
                         return;
