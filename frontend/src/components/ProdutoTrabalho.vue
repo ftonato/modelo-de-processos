@@ -1,13 +1,13 @@
 <template>
-  <div class="categorias">
+  <div class="produtos-trabalho">
 
     <div class="section">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Categoria</h1>
+            <h1>Produto de Trabalho</h1>
             <hr>
-            <form class="form-horizontal" role="form" v-on:submit.prevent="adicionarCategoria">
+            <form class="form-horizontal" role="form" v-on:submit.prevent="adicionarProdutoTrabalho">
               <div class="form-group">
                 <div class="col-sm-2">
                   <label for="nome" class="control-label">Nome</label>
@@ -15,12 +15,12 @@
                 <div class="col-sm-10">
 
                   <ul class="edit" v-show="editando">
-                    <li class="label label-success">Editando <strong>ID: </strong> <input class="input-fail" type="text" v-model="editCategoria.id"> </li>
+                    <li class="label label-success">Editando <strong>ID: </strong> <input class="input-fail" type="text" v-model="editProdutoTrabalho.id"> </li>
                   </ul>
 
-                  <input type="text" class="form-control" id="nome" placeholder="Nome" v-model="novaCategoria.nome">
+                  <input type="text" class="form-control" id="nome" placeholder="Nome" v-model="novoProdutoTrabalho.nome">
 
-                  <ul class="errors" v-show="!validarCategoria.nome">
+                  <ul class="errors" v-show="!validarProdutoTrabalho.nome">
                     <li class="label label-danger">Nome não pode ser vazio.</li>
                   </ul>
 
@@ -52,13 +52,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="categoria in categorias">
-                  <td scope="row">{{ categoria.id }}</td>
-                  <td scope="row">{{ categoria.nome }}</td>
+                <tr v-for="produto in produtosTrabalho">
+                  <td scope="row">{{ produto.id }}</td>
+                  <td scope="row">{{ produto.nome }}</td>
                   <td class="text-center">
-                    <a v-on:click.prevent="editarCategoria(categoria)" href="#" title="Editar Categoria"><i class="fa fa-pencil"></i></a>
-                    <a v-show="!editando" v-on:click.prevent="removerCategoria(categoria)" href="#" title="Deletar Categoria"><i class="fa fa-trash"></i></a>
-                    <!-- <a v-on:click="removerCategoria(categoria)" href="#" title="Deletar Categoria"><i class="fa fa-trash"></i></a> -->
+                    <a v-on:click.prevent="editarProdutoTrabalho(produto)" href="#" title="Editar Produto de Trabalho"><i class="fa fa-pencil"></i></a>
+                    <a v-show="!editando" v-on:click.prevent="removerProdutoTrabalho(produto)" href="#" title="Deletar Produto de Trabalho"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
               </tbody>
@@ -76,52 +75,52 @@
   export default {
     data () {
       return {
-        name: 'Lista de Categorias',
-        categorias: [],
-        novaCategoria: {
+        name: 'Lista de Produtos de Trabalhos',
+        produtosTrabalho: [],
+        novoProdutoTrabalho: {
           nome: '',
         },
-        editCategoria: {
+        editProdutoTrabalho: {
           id: '',
         },
         editando: false,
       }
     },
     mounted() {
-      this.listarCategorias();
+      this.listarProdutosTrabalho();
     },
     computed: {
-      validarCategoria() {
+      validarProdutoTrabalho() {
         return {
-          nome: !!this.novaCategoria.nome.trim(),
+          nome: !!this.novoProdutoTrabalho.nome.trim(),
         }
       },
       validarFormulario() {
-        let validarNovaCategoria = this.validarCategoria
-        return Object.keys(validarNovaCategoria).every(function (key) {
-          return validarNovaCategoria[key]
+        let validarnovoProdutoTrabalho = this.validarProdutoTrabalho
+        return Object.keys(validarnovoProdutoTrabalho).every(function (key) {
+          return validarnovoProdutoTrabalho[key]
         })
       }
     },
     methods: {
 
-      listarCategorias() {
-        this.$http.get('http://localhost:3000/categoria').then((req) => {
+      listarProdutosTrabalho() {
+        this.$http.get('http://localhost:3000/produtotrabalho').then((req) => {
 
-          // adiciona os itens das categorias p/ a lista de categorias
-          this.categorias = req.data;
+          // adiciona os itens dos produtos de trabalho p/ a lista de produtos de trabalhos
+          this.produtosTrabalho = req.data;
         });
 
       },
 
-      adicionarCategoria() {
+      adicionarProdutoTrabalho() {
 
         // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
 
-            this.atualizarCategoria();
+            this.atualizarProdutoTrabalho();
 
           } else {
             console.log('inválido');
@@ -131,14 +130,14 @@
 
           if (this.validarFormulario) {
 
-            let resource = this.$resource('http://localhost:3000/categoria');
-            let data = { 'nome': this.novaCategoria.nome };
+            let resource = this.$resource('http://localhost:3000/produtotrabalho');
+            let data = { 'nome': this.novoProdutoTrabalho.nome };
 
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de categorias
-              this.listarCategorias();
+              // chama o método para atualizar a lista de produtos de trabalhos
+              this.listarProdutosTrabalho();
 
               // limpa o formulário
               this.limparFormulario();
@@ -155,36 +154,36 @@
 
       },
 
-      editarCategoria(categoria) {
-        let _id = categoria.id;
-        let _nome = categoria.nome;
+      editarProdutoTrabalho(produto) {
+        let _id = produto.id;
+        let _nome = produto.nome;
 
         this.editando = true;
 
-        this.novaCategoria.nome = _nome;
-        this.editCategoria.id = _id;
+        this.novoProdutoTrabalho.nome = _nome;
+        this.editProdutoTrabalho.id = _id;
 
       },
 
       cancelarEdicao() {
-        this.novaCategoria.nome = '';
-        this.editCategoria.id = '';
+        this.novoProdutoTrabalho.nome = '';
+        this.editProdutoTrabalho.id = '';
 
         this.editando = false;
       },
 
-      atualizarCategoria() {
+      atualizarProdutoTrabalho() {
 
-        let data = { 'nome': this.novaCategoria.nome };
-        let _id = this.editCategoria.id.trim();
+        let data = { 'nome': this.novoProdutoTrabalho.nome };
+        let _id = this.editProdutoTrabalho.id.trim();
 
-        console.log('/categoria/'+_id, data);
+        console.log('/produtotrabalho/'+_id, data);
 
-        this.$http.put('http://localhost:3000/categoria/'+_id, data).then((response) => {
+        this.$http.put('http://localhost:3000/produtotrabalho/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de categorias
-            this.listarCategorias();
+            // chama o método para atualizar a lista de produtos de trabalhos
+            this.listarProdutosTrabalho();
 
             // limpa o formulário
             this.limparFormulario();
@@ -197,17 +196,17 @@
         this.editando = false;
       },
 
-      removerCategoria(categoria) {
+      removerProdutoTrabalho(produto) {
 
-        let resource = this.$resource('http://localhost:3000/categoria{/id}');
-        let _id = categoria.id.trim();
+        let resource = this.$resource('http://localhost:3000/produtotrabalho{/id}');
+        let _id = produto.id.trim();
 
         resource.delete({id: _id}).then((response) => {
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de categorias
-          this.listarCategorias();
+          // chama o método para atualizar a lista de produtos de trabalhos
+          this.listarProdutosTrabalho();
 
         }, (response) => {
           // error callback
@@ -216,7 +215,7 @@
       },
 
       limparFormulario() {
-        this.novaCategoria.nome = '';
+        this.novoProdutoTrabalho.nome = '';
       }
     },
 

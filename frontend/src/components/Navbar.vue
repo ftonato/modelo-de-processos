@@ -19,6 +19,10 @@
             <a>Modelo</a>
           </router-link>
 
+          <router-link active-class="active" tag="li" to="/meta-generica">
+            <a>Meta Genérica</a>
+          </router-link>
+
           <router-link active-class="active" tag="li" to="/nivel-capacidade">
             <a>Nível Capacidade</a>
           </router-link>
@@ -32,7 +36,11 @@
           </router-link>
 
           <router-link active-class="active" tag="li" to="/produto-trabalho">
-            <a>Produto Trabalho</a>
+            <a>Prod. Trab.</a>
+          </router-link>
+
+          <router-link active-class="active" tag="li" to="/pratica-especifica">
+            <a>Pratica Específ.</a>
           </router-link>
 
         </ul>

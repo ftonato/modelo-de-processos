@@ -7,8 +7,12 @@ import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
 import Modelo from './components/Modelo.vue';
+import MetaGenerica from './components/MetaGenerica.vue';
 import NivelMaturidade from './components/NivelMaturidade.vue';
-import A from './components/A.vue';
+import NivelCapacidade from './components/NivelCapacidade.vue';
+import Index from './components/Index.vue';
+import ProdutoTrabalho from './components/ProdutoTrabalho.vue';
+import PraticaEspecifica from './components/PraticaEspecifica.vue';
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -23,7 +27,14 @@ const router = new VueRouter({
       {
         path: '/',
         components: {
-          default: A,
+          default: Index,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/meta-generica',
+        components: {
+          default: MetaGenerica,
           sidebar: Navbar
         }
       },
@@ -31,6 +42,13 @@ const router = new VueRouter({
         path: '/nivel-maturidade',
         components: {
           default: NivelMaturidade,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/nivel-capacidade',
+        components: {
+          default: NivelCapacidade,
           sidebar: Navbar
         }
       },
@@ -45,6 +63,20 @@ const router = new VueRouter({
         path: '/modelo',
         components: {
           default: Modelo,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/produto-trabalho',
+        components: {
+          default: ProdutoTrabalho,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/pratica-especifica',
+        components: {
+          default: PraticaEspecifica,
           sidebar: Navbar
         }
       }
