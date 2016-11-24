@@ -26,7 +26,7 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
 }
 
 function montaJson(reqBody) {
-    var retVal = { nome: reqBody.nome, descricao: reqBody.descricao, sigla: reqBody.sigla, produtoTrab: {} };
+    var retVal = { nome: reqBody.nome, descricao: reqBody.descricao, sigla: reqBody.sigla, produtoTrab: {}, metasEspec: reqBody.metasEspec };
 
     reqBody.produtosTrab.forEach(function (e) {
         retVal.produtoTrab[e] = true;
