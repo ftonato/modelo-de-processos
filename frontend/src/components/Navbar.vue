@@ -26,22 +26,6 @@
           <router-link active-class="active" tag="li" to="/nivel-capacidade">
             <a>Nível Capacidade</a>
           </router-link>
-<!-- 
-          <router-link active-class="active" tag="li" to="/area-processo">
-            <a>Área de Processo</a>
-          </router-link>
-
-          <router-link active-class="active" tag="li" to="/meta-especifica">
-            <a>Meta Específica</a>
-          </router-link>
-
-            <router-link active-class="active" tag="li" to="/pratica-especifica">
-            <a>Prática Específica</a>
-          </router-link>
-
-          <router-link active-class="active" tag="li" to="/produto-trabalho">
-            <a>Produto Trabalho</a>
-          </router-link> -->
 
           <router-link active-class="active" tag="li" to="/nivel-maturidade">
             <a>Nível Maturidade</a>

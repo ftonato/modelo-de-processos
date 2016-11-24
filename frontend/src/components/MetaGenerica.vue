@@ -56,7 +56,7 @@
                   <label for="metas_genericas" class="control-label">Nível de Capacidade</label>
                 </div>
                 <div class="col-sm-10">
-                  <select class="form-control" name="nivel_capacidade" id="nivel_capacidade" v-model="novoMetaGenerica.nivelCap" single>
+                  <select class="form-control" name="nivel_capacidade" id="nivel_capacidade" v-model="novoMetaGenerica.nivelCap">
                     <option v-for="option in listniveisCap" v-bind:value="option.value">
                       {{ option.text }}
                     </option>
@@ -121,7 +121,8 @@
         novoMetaGenerica: {
           sigla: '',
           nome: '',
-          descricao: ''
+          descricao: '',
+          nivelCap: []
         },
         editMetaGenerica: {
           id: '',
@@ -290,7 +291,7 @@
         this.novoMetaGenerica.sigla = '';
         this.novoMetaGenerica.nome = '';
         this.novoMetaGenerica.descricao = '';
-        this.novoMetaGenerica.nivelCap = '';
+        this.novoMetaGenerica.nivelCap = [];
       }
     }
   }

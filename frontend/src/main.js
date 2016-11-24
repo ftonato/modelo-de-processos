@@ -10,7 +10,7 @@ import Modelo from './components/Modelo.vue';
 import MetaGenerica from './components/MetaGenerica.vue';
 import NivelMaturidade from './components/NivelMaturidade.vue';
 import NivelCapacidade from './components/NivelCapacidade.vue';
-import A from './components/A.vue';
+import Index from './components/Index.vue';
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -25,7 +25,7 @@ const router = new VueRouter({
       {
         path: '/',
         components: {
-          default: A,
+          default: Index,
           sidebar: Navbar
         }
       },
