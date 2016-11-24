@@ -24,8 +24,6 @@
                     <li class="label label-danger">Nome não pode ser vazio.</li>
                   </ul>
 
-                  <!-- <pre style="margin-top: 10px"><code> {{ novaCategoria.nome }} </code></pre> -->
-
                 </div>
               </div>
               <div class="form-group">
