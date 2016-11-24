@@ -16,7 +16,9 @@ module.exports = {
     init: function (db, app, gcs) {
         var ref = db.ref('/produtoTrab');
         var transform = require('./../transform.js');
-        var fs = require('fs');
+        var multer = require('multer');
+        // var upload = multer({ dest: 'uploads/' });
+        var upload = multer({ storage: multer.memoryStorage() });
 
         app.get(path, function (req, res) {
             ref.once('value', function (snapshot) {
@@ -40,20 +42,30 @@ module.exports = {
             validaBody(req.body, () => ref.push(montaJson(req.body)).then(snap => res.status(201).send(snap.key)), error => res.status(400).send(error));
         });
 
-        app.post(path + "/:key", function (req, res) {
+        app.post(path + "/:key", upload.single('template'), function (req, res) {
             ref.once('value', function (snap) {
                 if (!snap.hasChild(req.params.key)) {
                     res.status(404).send();
                 } else {
-                    // fs.readFile(req.files.template.path, (err, data) => {
-                    //     var bucket = gcs.bucket('produtoTrab');                        
-                    //     storage.child(req.params.key).put(data, req.files.template.type).then(storageSnap => {
-                    //         var updloadInfo = { "template": storageSnap.metadata.downloadURLs[0] };
-                    //         ref.child(req.params.key).update(updloadInfo).then(() => res.status(200).send(updloadInfo.template));
-                    //     }).catch(error => res.status(400).send(error));
-                    // });
+                    var bucket = gcs.bucket('objeto-relacional.appspot.com');
+                    var blob = bucket.file(req.params.key);
+                    var blobStream = blob.createWriteStream({
+                        metadata: {
+                            contentType: req.file.mimetype
+                        }
+                    });
 
-                    res.status(400).send('Não implementado');
+                    blobStream.on('error', function (err) {
+                        res.status(400).send(err);
+                    });
+
+                    blobStream.on('finish', function () {
+                        const uploadedFile = 'https://storage.googleapis.com/objeto-relacional.appspot.com/' + req.params.key;
+                        ref.child(req.params.key).update({ template: uploadedFile });
+                        res.status(200).send(uploadedFile);
+                    });
+
+                    blobStream.end(req.file.buffer);
                 }
             });
         });

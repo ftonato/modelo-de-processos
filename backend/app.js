@@ -2,7 +2,7 @@ const express = require('express');
 const firebase = require('firebase');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const gcloud = require('google-cloud')({ projectId: 'objeto-relacional' });
+const gcloud = require('google-cloud-storage-standalone');
 
 // carrega arquivos locais
 const basicModel = require('./models/basicModel.js');
@@ -27,7 +27,10 @@ firebase.initializeApp(config);
 
 const app = express();
 const db = firebase.database();
-// const gcs = gcloud.storage();
+const gcs = gcloud.storage({
+  projectId: 'objeto-relacional',
+  keyFilename: './privateKey.json'
+});
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -45,7 +48,7 @@ basicModel.init(db, app, '/nivelMaturidade', '/nivelMatu', ((body) => {
 }));
 
 metasGen.init(db, app);
-produtoTrab.init(db, app, null);
+produtoTrab.init(db, app, gcs);
 praticaEspec.init(db, app);
 metasEspec.init(db, app);
 areaProc.init(db, app);
