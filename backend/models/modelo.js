@@ -48,6 +48,76 @@ function montaJson(reqBody) {
     return retVal;
 }
 
+function geraPdf(db, modelo, res) {
+    var PDFDocument = require('pdfkit');
+    var reflect = require('harmony-reflect');
+    var Q = require('q');
+    var doc = new PDFDocument();
+
+    var areaProcRef = db.ref('/areaProc');
+    var metasGenRef = db.ref('/metasGen');
+    var nivelCapRef = db.ref('/nivelCap');
+
+    res.setHeader('content-type', 'application/pdf');
+
+    doc.pipe(res);
+
+    doc.text('modelo: ');
+
+    doc.text(' nome: ' + modelo.nome);
+    doc.text(' descricao: ' + modelo.descricao);
+    doc.text(' sigla: ' + modelo.sigla);
+
+    Q.fcall(
+        areaProcRef.once('value')
+            .then(areaProcSnap => {
+                doc.text(' areaProc:');
+                
+                reflect.ownKeys(modelo.areaProc).forEach(function (e) {
+                    var areaProc = areaProcSnap.child(e).val();
+                    doc.text('    nome: ' + areaProc.nome);
+                    doc.text('    descricao: ' + areaProc.descricao);
+                    doc.text('    sigla: ' + areaProc.sigla);
+                    doc.text('');
+                });
+            })
+    );
+
+    areaProcRef.once('value')
+        .then(areaProcSnap => {
+            doc.text(' areaProc:');
+
+            reflect.ownKeys(modelo.areaProc).forEach(function (e) {
+                var areaProc = areaProcSnap.child(e).val();
+                doc.text('    nome: ' + areaProc.nome);
+                doc.text('    descricao: ' + areaProc.descricao);
+                doc.text('    sigla: ' + areaProc.sigla);
+                doc.text('');
+            });
+        })
+        .then(() => {
+            doc.text(' metasGen:');
+        });
+
+    metasGenRef.once('value', metasGenSnap => {
+        reflect.ownKeys(modelo.metasGen).forEach(function (e) {
+            var metasGen = metasGenSnap.child(e).val();
+            doc.text('    nome: ' + metasGen.nome);
+            doc.text('    descricao: ' + metasGen.descricao);
+            doc.text('    sigla: ' + metasGen.sigla);
+            doc.text('    nivelCap:');
+            nivelCapRef.child(metasGen.nivelCap).once('value', nivelCapSnap => {
+                var nivelCap = nivelCapSnap.val();
+                doc.text('        nome: ' + nivelCap.nome);
+                doc.text('        descricao: ' + nivelCap.descricao);
+                doc.text('        sigla: ' + nivelCap.sigla);
+                doc.text('');
+                doc.end();
+            });
+        });
+    });
+}
+
 module.exports = {
     init: function (db, app) {
         var ref = db.ref('/modelo');
@@ -67,6 +137,18 @@ module.exports = {
                     res.status(404).send();
                 } else {
                     res.send(obj);
+                }
+            });
+        });
+
+        app.get(path + "/:key/pdf", function (req, res) {
+            ref.child(req.params.key).once('value', function (snap) {
+                var obj = snap.val();
+
+                if (obj == null) {
+                    res.status(404).send();
+                } else {
+                    geraPdf(db, obj, res);
                 }
             });
         });
