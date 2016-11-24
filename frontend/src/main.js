@@ -12,6 +12,7 @@ import NivelMaturidade from './components/NivelMaturidade.vue';
 import NivelCapacidade from './components/NivelCapacidade.vue';
 import Index from './components/Index.vue';
 import ProdutoTrabalho from './components/ProdutoTrabalho.vue';
+import PraticaEspecifica from './components/PraticaEspecifica.vue';
 
 Vue.use(VueResource)
 Vue.use(VueRouter)
@@ -69,6 +70,13 @@ const router = new VueRouter({
         path: '/produto-trabalho',
         components: {
           default: ProdutoTrabalho,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/pratica-especifica',
+        components: {
+          default: PraticaEspecifica,
           sidebar: Navbar
         }
       }
