@@ -35,6 +35,10 @@
             <a>Categoria</a>
           </router-link>
 
+          <router-link active-class="active" tag="li" to="/produto-trabalho">
+            <a>Prod. Trab.</a>
+          </router-link>
+
         </ul>
       </div>
     </div>
