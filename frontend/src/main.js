@@ -7,7 +7,9 @@ import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
 import Modelo from './components/Modelo.vue';
+import MetaGenerica from './components/MetaGenerica.vue';
 import NivelMaturidade from './components/NivelMaturidade.vue';
+import NivelCapacidade from './components/NivelCapacidade.vue';
 import A from './components/A.vue';
 
 Vue.use(VueResource)
@@ -28,9 +30,23 @@ const router = new VueRouter({
         }
       },
       {
+        path: '/meta-generica',
+        components: {
+          default: MetaGenerica,
+          sidebar: Navbar
+        }
+      },
+      {
         path: '/nivel-maturidade',
         components: {
           default: NivelMaturidade,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/nivel-capacidade',
+        components: {
+          default: NivelCapacidade,
           sidebar: Navbar
         }
       },
