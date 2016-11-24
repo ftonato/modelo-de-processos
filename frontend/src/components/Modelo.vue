@@ -69,11 +69,11 @@
 
               <div class="form-group">
                 <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Area Processo</label>
+                  <label for="area_processo" class="control-label">Area Processo</label>
                 </div>
                 <div class="col-sm-10">
 
-                  <select class="form-control" name="metas_genericas" id="metas_genericas" v-model="novoModelo.areaProcesso" multiple>
+                  <select class="form-control" name="area_processo" id="area_processo" v-model="novoModelo.areaProcesso" multiple>
                     <option v-for="option in listaAreaProcesso" v-bind:value="option.value">
                       {{ option.text }}
                     </option>
