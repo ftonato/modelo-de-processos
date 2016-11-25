@@ -1,6 +1,6 @@
 {
-  "name": "modelo-processo",
-  "description": "A Vue.js project",
+  "name": "MP",
+  "description": "Ferramenta para gerenciar informações de um modelo de referência de processo de software",
   "author": "Ademílson F. Tonato <ademilsonft@outlook.com>",
   "private": true,
   "scripts": {
