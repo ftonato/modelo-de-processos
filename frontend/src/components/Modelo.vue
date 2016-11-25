@@ -116,6 +116,7 @@
                   <td scope="row">{{ modelo.sigla }}</td>
                   <td scope="row">{{ modelo.descricao }}</td>
                   <td class="text-center">
+                    <a v-on:click.prevent="downloadModelo(modelo.id)" target="_blank" title="Baixar Modelo"><i class="fa fa-download"></i></a>
                     <a v-on:click.prevent="editarModelo(modelo)" href="#" title="Editar Modelo"><i class="fa fa-pencil"></i></a>
                     <a v-show="!editando" v-on:click.prevent="removerModelo(modelo)" href="#" title="Deletar Modelo"><i class="fa fa-trash"></i></a>
                   </td>
@@ -349,6 +350,10 @@
         this.novoModelo.descricao = '';
         this.novoModelo.metasGen = [];
         this.novoModelo.areaProcesso = [];
+      },
+
+      downloadModelo(id) {
+        window.open(`http://localhost:3000/modelo/${id}/pdf`);
       }
     }
   }
