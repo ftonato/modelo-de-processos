@@ -7,17 +7,13 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
         notGoodCallback('descricao nao informada');
     } else if (reqBody.sigla == null) {
         notGoodCallback('sigla nao informada');
-    } else if (reqBody.praticasEspec == null) {
-        notGoodCallback('praticas especifica nao informadas');
-    } else if (reqBody.praticasEspec.length == 0) {
-        notGoodCallback('praticas especifica não informadas');
+    } else if (reqBody.areaProc == null) {
+        notGoodCallback('area de processo nao informada');
     } else {
-        db.ref('/praticasEspec').once('value', function (snap) {
-            for (var i = 0; i < reqBody.praticasEspec.length; ++i) {
-                if (!snap.hasChild(reqBody.praticasEspec[i])) {
-                    notGoodCallback('pratica especifica não informada');
-                    return;
-                }
+        db.ref('/areaProc').once('value', function (snap) {
+            if (!snap.hasChild(reqBody.areaProc)) {
+                notGoodCallback('area de processo nao existe');
+                return;
             }
 
             allGoodCallback();
@@ -26,11 +22,12 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
 }
 
 function montaJson(reqBody) {
-    var retVal = { nome: reqBody.nome, descricao: reqBody.descricao, sigla: reqBody.sigla, praticasEspec: {} };
-
-    reqBody.praticasEspec.forEach(function (e) {
-        retVal.praticasEspec[e] = true;
-    });
+    var retVal = {
+        nome: reqBody.nome,
+        descricao: reqBody.descricao,
+        sigla: reqBody.sigla,
+        areaProc: reqBody.areaProc
+    };
 
     return retVal;
 }

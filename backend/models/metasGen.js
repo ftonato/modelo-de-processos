@@ -9,10 +9,12 @@ function validateBody(reqBody, db, allGoodCallback, notGoodCallback) {
         notGoodCallback('sigla nao informada');
     } else if (reqBody.nivelCap == null) {
         notGoodCallback('Chave do nivel de capacidade nao informada');
+    } else if (reqBody.modelo == null) {
+        notGoodCallback('Chave do modelo nao informada');
     } else {
-        db.ref('/nivelCap').once('value', function (snap) {
-            if (!snap.hasChild(reqBody.nivelCap)) {
-                notGoodCallback('Chave de nivel de capacidade nao existe');
+        db.ref('/modelo').once('value', function (snap) {
+            if (!snap.hasChild(reqBody.modelo)) {
+                notGoodCallback('Chave de modelo nao existe');
             } else {
                 allGoodCallback();
             }
@@ -21,7 +23,13 @@ function validateBody(reqBody, db, allGoodCallback, notGoodCallback) {
 }
 
 function montaJson(reqBody) {
-    return { nome: reqBody.nome, descricao: reqBody.descricao, sigla: reqBody.sigla, nivelCap: reqBody.nivelCap };
+    return {
+        nome: reqBody.nome,
+        descricao: reqBody.descricao,
+        sigla: reqBody.sigla,
+        nivelCap: reqBody.nivelCap,
+        modelo: reqBody.modelo
+    };
 }
 
 module.exports = {

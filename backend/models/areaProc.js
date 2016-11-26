@@ -13,27 +13,21 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
         notGoodCallback('categoria nao informada');
     } else if (reqBody.nivelMatu == null) {
         notGoodCallback('nivel de maturidade nao informadas');
-    } else if (reqBody.metasEspec.length == 0) {
-        notGoodCallback('metas especifica nao informadas');
-    } else if (reqBody.categoria.length == 0) {
-        notGoodCallback('categoria nao informada');
-    } else if (reqBody.nivelMatu.length == 0) {
-        notGoodCallback('nivel de maturidade nao informadas');
+    } else if (reqBody.modulo == null) {
+        notGoodCallback('modulo nao informadas');
     } else {
-        db.ref('/metasEspec').once('value', function (snap) {
-            for (var i = 0; i < reqBody.metasEspec.length; ++i) {
-                if (!snap.hasChild(reqBody.metasEspec[i])) {
-                    notGoodCallback('meta especifica não informada');
-                    return;
-                }
+        db.ref('/modulo').once('value', function (modeloSnap) {
+            if (!modeloSnap.hasChild(reqBody.modulo)) {
+                notGoodCallback('meta especifica não informada');
+                return;
             }
 
-            db.ref('/nivelMatu').once('value', function (snap) {
-                if (!snap.hasChild(reqBody.nivelMatu)) {
+            db.ref('/nivelMatu').once('value', function (nivelMatuSnap) {
+                if (!nivelMatuSnap.hasChild(reqBody.nivelMatu)) {
                     notGoodCallback('nivel de maturidade nao existe');
                 } else {
-                    db.ref('/categoria').once('value', function (snap) {
-                        if (!snap.hasChild(reqBody.categoria)) {
+                    db.ref('/categoria').once('value', function (categoriaSnap) {
+                        if (!categoriaSnap.hasChild(reqBody.categoria)) {
                             notGoodCallback('categoria nao existe');
                         } else {
                             allGoodCallback();
@@ -46,11 +40,14 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
 }
 
 function montaJson(reqBody) {
-    var retVal = { nome: reqBody.nome, descricao: reqBody.descricao, sigla: reqBody.sigla, categoria: reqBody.categoria, nivelMatu: reqBody.nivelMatu, metasEspec: {} };
-
-    reqBody.metasEspec.forEach(function (e) {
-        retVal.metasEspec[e] = true;
-    });
+    var retVal = {
+        nome: reqBody.nome,
+        descricao: reqBody.descricao,
+        sigla: reqBody.sigla,
+        categoria: reqBody.categoria,
+        nivelMatu: reqBody.nivelMatu,
+        modulo: reqBody.modulo
+    };
 
     return retVal;
 }
