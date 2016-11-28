@@ -23,11 +23,7 @@ function validaBody(reqBody, db, allGoodCallback, notGoodCallback) {
       }
 
       db.ref('/metasEspec/').once('value', function (snapN) {
-<<<<<<< HEAD
-        if (!snapN.hasChild(reqBody.metasEspec)){
-=======
         if (!snapN.hasChild(reqBody.metasEspec)) {
->>>>>>> upstream/master
           notGoodCallback('meta especifica nao existe');
           return;
         } else {
