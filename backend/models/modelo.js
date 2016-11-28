@@ -2,7 +2,7 @@ function geraPdf(db, modelo, res) {
   var PDFDocument = require('pdfkit');
   var reflect = require('harmony-reflect');
   var Q = require('q');
-  require('q-foreach')(Q);
+  require('./../q-foreach.js')(Q);
 
   var doc = new PDFDocument();
 
@@ -22,17 +22,19 @@ function geraPdf(db, modelo, res) {
   doc.text(' nome: ' + modelo.nome);
   doc.text(' descricao: ' + modelo.descricao);
   doc.text(' sigla: ' + modelo.sigla);
-  doc.text(' areaProc:');
 
-  areaProcRef.orderByChild('modelo').equalTo(modelo.id).on('child_added')
-    .then(areaProcSnap => {
-      var areaProc = areaProcSnap.val();
+  areaProcRef.orderByChild('modelo').startAt(modelo.id).endAt(modelo.id).once('value').then(areaProcSnap => {
+    return Q.forEach(areaProcSnap, childAreaProcSnap => {
+      var areaProc = childAreaProcSnap.val();
+      doc.text(' areaProc:');
       doc.text('    nome: ' + areaProc.nome);
       doc.text('    descricao: ' + areaProc.descricao);
       doc.text('    sigla: ' + areaProc.sigla);
 
       return categoriaRef.child(areaProc.categoria).once('value').then(categoriaSnap => {
-        doc.text('    categoria: ' + categoriaSnap.val().nome);
+        var categoria = categoriaSnap.val();
+        doc.text('    categoria: ' + categoria.nome);
+        return Q.when(categoria);
       }).then(() => {
         return nivelMatuRef.child(areaProc.nivelMatu).once('value').then(nivelMatuSnap => {
           var nivelMatu = nivelMatuSnap.val();
@@ -40,63 +42,66 @@ function geraPdf(db, modelo, res) {
           doc.text('        nome: ' + nivelMatu.nome);
           doc.text('        descricao: ' + nivelMatu.descricao);
           doc.text('        sigla: ' + nivelMatu.sigla);
-          doc.text(' ');
+
+          return Q.when(nivelMatu);
         });
       }).then(() => {
-        doc.text('    metasEspec:');
-        return metasEspecRef.orderByChild('areaProc').equalTo(areaProcSnap.key).on('child_added').then(metasEspecSnap => {
-          var metasEspec = metasEspecSnap.val();
+        return metasEspecRef.orderByChild('areaProc').startAt(childAreaProcSnap.key).endAt(childAreaProcSnap.key).once('value').then(metasEspecSnap => {
+          return Q.forEach(metasEspecSnap, childMetasEspecSnap => {
+            var metasEspec = childMetasEspecSnap.val();
+            doc.text('    metasEspec:');
+            doc.text('        nome: ' + metasEspec.nome);
+            doc.text('        descricao: ' + metasEspec.descricao);
+            doc.text('        sigla: ' + metasEspec.sigla);
 
-          doc.text('        nome: ' + metasEspec.nome);
-          doc.text('        descricao: ' + metasEspec.descricao);
-          doc.text('        sigla: ' + metasEspec.sigla);
-          doc.text('        praticasEspec:');
+            return praticasEspecRef.orderByChild('metasEspec').startAt(childMetasEspecSnap.key).endAt(childMetasEspecSnap.key).once('value').then(praticasEspecSnap => {
+              return Q.forEach(praticasEspecSnap, childPraticasEspecSnap => {
+                var praticasEspec = childPraticasEspecSnap.val();
 
-          return praticasEspecRef.orderByChild('metasEspec').equalTo(metasEspecSnap.key).on('child_added').then(praticasEspecSnap => {
-            var praticasEspec = praticasEspecSnap.val();
+                doc.text('        praticasEspec:');
+                doc.text('            nome: ' + praticasEspec.nome);
+                doc.text('            descricao: ' + praticasEspec.descricao);
+                doc.text('            sigla: ' + praticasEspec.sigla);
 
-            doc.text('            nome: ' + praticasEspec.nome);
-            doc.text('            descricao: ' + praticasEspec.descricao);
-            doc.text('            sigla: ' + praticasEspec.sigla);
-            doc.text(' ');
-          }).then(() => {
-            doc.text(' ');
+                return Q.when(praticasEspec);
+              });
+            });
           });
-        }).then(() => {
-          doc.text(' ');
         });
       });
-    }).then(() => {
-      doc.text(' metasGen:');
+    });
+  }).then(() => {
+    return metasGenRef.orderByChild('modelo').startAt(modelo.id).endAt(modelo.id).once('value').then(metasGenSnap => {
+      return Q.forEach(metasGenSnap, childMetasGenSnap => {
+        var metasGen = childMetasGenSnap.val();
 
-      return metasGenRef.orderByChild('modelo').equalTo(modelo.id).on('child_added').then(metasGenSnap => {
-        var metasGen = metasGenSnap.val();
-
+        doc.text(' metasGen:');
         doc.text('    nome: ' + metasGen.nome);
         doc.text('    descricao: ' + metasGen.descricao);
         doc.text('    sigla: ' + metasGen.sigla);
-        doc.text('    nivelCap:');
 
         return nivelCapRef.child(metasGen.nivelCap).once('value').then(nivelCapSnap => {
           var nivelCap = nivelCapSnap.val();
+
+          doc.text('    nivelCap:');
           doc.text('        nome: ' + nivelCap.nome);
           doc.text('        descricao: ' + nivelCap.descricao);
           doc.text('        sigla: ' + nivelCap.sigla);
-          doc.text(' ');
-        }).then(() => {
-          doc.text(' ');
+
+          return Q.when(nivelCap);
         });
       });
-    }).then(() => {
-      doc.end();
     });
+  }).then(() => {
+    doc.end();
+  });
 }
 
 module.exports = {
   init: function (db, app) {
     var ref = db.ref('/modelo');
 
-    app.get('modelo/:key/pdf', function (req, res) {
+    app.get('/modelo/:key/pdf', function (req, res) {
       ref.child(req.params.key).once('value', function (snap) {
         var obj = snap.val();
 

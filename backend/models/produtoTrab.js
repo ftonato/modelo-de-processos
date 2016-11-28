@@ -41,7 +41,28 @@ module.exports = {
       validaBody(req.body, () => ref.push(montaJson(req.body)).then(snap => res.status(201).send(snap.key)), error => res.status(400).send(error));
     });
 
-    app.post(path + "/:key", upload.single('template'), function (req, res) {
+    app.get(path + "/:key/template", function (req, res) {
+      ref.once('value', function (snap) {
+        if (!snap.hasChild(req.params.key)) {
+          res.status(404).send();
+        } else {
+          var bucket = gcs.bucket('objeto-relacional.appspot.com');
+          var blob = bucket.file(req.params.key);
+          var blobStream = blob.createReadStream();
+
+          blobStream.on('error', function (err) {
+            res.status(400).send(err);
+          });
+          blobStream.on('finish', function () {
+            res.status(200).send();
+          });
+
+          blobStream.pipe(res);
+        }
+      });
+    });
+
+    app.post(path + "/:key/template", upload.single('template'), function (req, res) {
       ref.once('value', function (snap) {
         if (!snap.hasChild(req.params.key)) {
           res.status(404).send();
