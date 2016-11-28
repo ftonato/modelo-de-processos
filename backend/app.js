@@ -46,6 +46,9 @@ basicModel.init(db, app, '/nivelCapacidade', '/nivelCap', ((body) => {
 basicModel.init(db, app, '/nivelMaturidade', '/nivelMatu', ((body) => {
   return { nome: body.nome, descricao: body.descricao, sigla: body.sigla };
 }));
+basicModel.init(db, app, '/modelo', '/modelo', (body) => {
+  return { nome: body.nome, descricao: body.descricao, sigla: body.sigla };
+});
 
 metasGen.init(db, app);
 produtoTrab.init(db, app, gcs);
