@@ -140,7 +140,6 @@
       listarNiveisMaturidade() {
         this.$http.get('http://localhost:3000/nivelmaturidade').then((req) => {
 
-          // adiciona os itens dos niveis de maturidade p/ a lista de niveis de maturidade
           this.niveisMaturidade = req.data;
         });
 
@@ -148,7 +147,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -159,7 +157,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -173,10 +171,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de niveis de maturidade
               this.listarNiveisMaturidade();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -230,10 +226,8 @@
         this.$http.put('http://localhost:3000/nivelmaturidade/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de niveis de maturidade
             this.listarNiveisMaturidade();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -253,7 +247,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de niveis de maturidade
           this.listarNiveisMaturidade();
 
         }, (response) => {

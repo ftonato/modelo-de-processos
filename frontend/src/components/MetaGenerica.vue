@@ -65,7 +65,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Nível de Capacidade</label>
+                  <label for="nivel_capacidade" class="control-label">Nível de Capacidade</label>
                 </div>
                 <div class="col-sm-10">
                   <select class="form-control" name="nivel_capacidade" id="nivel_capacidade" v-model="novoMetaGenerica.nivelCap">
@@ -168,13 +168,13 @@
 
       listarMetasGenericas() {
         this.$http.get('http://localhost:3000/metasgenericas').then((req) => {
-          // adiciona os itens das metas p/ a lista de metas genéricas
+
           this.metasGenericas = req.data;
         });
       },
       loadAllModelos() {
         this.$http.get('http://localhost:3000/modelo').then((req) => {
-          // adiciona os niveis de modelo p/ a lista
+
           for (let i = 0; i < req.data.length; i++) {
             this.listModelos.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -182,7 +182,7 @@
       },
       loadAllNiveisCap() {
         this.$http.get('http://localhost:3000/nivelcapacidade').then((req) => {
-          // adiciona os niveis de capacidade p/ a lista de niveis de capacidade
+
           for (let i = 0; i < req.data.length; i++) {
             this.listniveisCap.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -191,7 +191,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -202,7 +201,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -218,10 +217,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de metas genéricas
               this.listarMetasGenericas();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -244,7 +241,7 @@
         this.novoMetaGenerica.descricao = meta.descricao;
         this.novoMetaGenerica.modelo = meta.modelo;
         this.novoMetaGenerica.nivelCap = meta.nivelCap;
-        
+
         this.editMetaGenerica.id = meta.id;
 
       },
@@ -276,10 +273,8 @@
         this.$http.put('http://localhost:3000/metasgenericas/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de metas genéricas
             this.listarMetasGenericas();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -299,7 +294,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de metas genéricas
           this.listarMetasGenericas();
 
         }, (response) => {

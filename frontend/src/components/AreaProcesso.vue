@@ -1,5 +1,5 @@
 <template>
-  <div class="meta-generica">
+  <div class="area-processo">
 
     <div class="section">
       <div class="container">
@@ -65,7 +65,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Nível de Maturidade</label>
+                  <label for="nivel_maturidade" class="control-label">Nível de Maturidade</label>
                 </div>
                 <div class="col-sm-10">
                   <select class="form-control" name="nivel_maturidade" id="nivel_maturidade" v-model="novoAreaProcesso.nivelMatu">
@@ -77,7 +77,7 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Categoria</label>
+                  <label for="categoria" class="control-label">Categoria</label>
                 </div>
                 <div class="col-sm-10">
                   <select class="form-control" name="categoria" id="categoria" v-model="novoAreaProcesso.categoria">
@@ -183,15 +183,14 @@
 
       listarMetasGenericas() {
         this.$http.get('http://localhost:3000/areaprocesso').then((req) => {
-          // adiciona os itens das metas p/ a lista de metas genéricas
+
           this.areasProcessos = req.data;
         });
       },
 
-      // Carrega dados para combobox
       loadAllModelos() {
         this.$http.get('http://localhost:3000/modelo').then((req) => {
-          // remodela os dados dos os modelos para o select
+
           for (let i = 0; i < req.data.length; i++) {
             this.listModelos.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -199,6 +198,7 @@
       },
       loadAllCategorias() {
         this.$http.get('http://localhost:3000/categoria').then((req) => {
+
           for (let i = 0; i < req.data.length; i++) {
             this.listCategorias.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -206,6 +206,7 @@
       },
       loadAllNiveisMatu() {
         this.$http.get('http://localhost:3000/nivelmaturidade').then((req) => {
+
           for (let i = 0; i < req.data.length; i++) {
             this.listNivelMat.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -214,7 +215,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -225,7 +225,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -242,10 +242,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de metas genéricas
               this.listarMetasGenericas();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -297,10 +295,8 @@
         this.$http.put('http://localhost:3000/areaprocesso/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de metas genéricas
             this.listarMetasGenericas();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -320,7 +316,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de metas genéricas
           this.listarMetasGenericas();
 
         }, (response) => {

@@ -153,14 +153,14 @@
 
       listarMetasEspecificas() {
         this.$http.get('http://localhost:3000/metaespecifica').then((req) => {
-          // adiciona os itens das metas especificas p/ a lista de metas específicas
+
           this.metasEspecificas = req.data;
         });
       },
 
       listarAreasProcesso() {
         this.$http.get('http://localhost:3000/areaprocesso').then((req) => {
-          // adiciona as areas processo p/ a lista de areas de processo
+
           for (let i = 0; i < req.data.length; i++) {
             this.listaAreasProcesso.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -169,7 +169,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -180,7 +179,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -195,10 +194,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de metas específicas
               this.listarMetasEspecificas();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -256,10 +253,8 @@
         this.$http.put('http://localhost:3000/metaespecifica/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de metas específicas
             this.listarMetasEspecificas();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -279,7 +274,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de metas específicas
           this.listarMetasEspecificas();
 
         }, (response) => {

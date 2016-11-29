@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 
-/* Components */
 import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
@@ -19,11 +18,7 @@ import MetaEspecifica from './components/MetaEspecifica.vue';
 Vue.use(VueResource)
 Vue.use(VueRouter)
 
-// Vue.config.debug = true;
-// Vue.config.devtools = true
-
 const router = new VueRouter({
-    //mode: 'history',
     linkActiveClass: 'active',
     routes: [
       {
@@ -103,5 +98,4 @@ new Vue({
   el: '#app',
   router,
   render: h => h(App),
-  //render: h => h(require('./App.vue')),
 })
