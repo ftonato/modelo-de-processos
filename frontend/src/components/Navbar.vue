@@ -43,6 +43,10 @@
             <a>Pratica Específ.</a>
           </router-link>
 
+          <router-link active-class="active" tag="li" to="/meta-especifica">
+            <a>Meta Específ.</a>
+          </router-link>
+
         </ul>
       </div>
     </div>
