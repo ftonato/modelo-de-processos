@@ -1,5 +1,5 @@
 <template>
-  <div class="categorias">
+  <div class="categoria">
 
     <div class="section">
       <div class="container">
@@ -58,7 +58,6 @@
                   <td class="text-center">
                     <a v-on:click.prevent="editarCategoria(categoria)" href="#" title="Editar Categoria"><i class="fa fa-pencil"></i></a>
                     <a v-show="!editando" v-on:click.prevent="removerCategoria(categoria)" href="#" title="Deletar Categoria"><i class="fa fa-trash"></i></a>
-                    <!-- <a v-on:click="removerCategoria(categoria)" href="#" title="Deletar Categoria"><i class="fa fa-trash"></i></a> -->
                   </td>
                 </tr>
               </tbody>
@@ -108,7 +107,6 @@
       listarCategorias() {
         this.$http.get('http://localhost:3000/categoria').then((req) => {
 
-          // adiciona os itens das categorias p/ a lista de categorias
           this.categorias = req.data;
         });
 
@@ -116,7 +114,6 @@
 
       adicionarCategoria() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -127,7 +124,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -137,10 +134,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de categorias
               this.listarCategorias();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -183,10 +178,8 @@
         this.$http.put('http://localhost:3000/categoria/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de categorias
             this.listarCategorias();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -206,7 +199,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de categorias
           this.listarCategorias();
 
         }, (response) => {

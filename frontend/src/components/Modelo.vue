@@ -1,5 +1,5 @@
 <template>
-  <div class="modelos">
+  <div class="modelo">
 
     <div class="section">
       <div class="container">
@@ -110,7 +110,8 @@
         novoModelo: {
           sigla: '',
           nome: '',
-          descricao: '',        },
+          descricao: '',
+        },
         editModelo: {
           id: '',
         },
@@ -140,7 +141,6 @@
       listarModelos() {
         this.$http.get('http://localhost:3000/modelo').then((req) => {
 
-          // adiciona os itens dos modelos p/ a lista de modelos
           this.modelos = req.data;
         });
 
@@ -148,7 +148,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -159,7 +158,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -173,10 +172,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de modelos
               this.listarModelos();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -230,10 +227,8 @@
         this.$http.put('http://localhost:3000/modelo/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de modelos
             this.listarModelos();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -253,7 +248,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de modelos
           this.listarModelos();
 
         }, (response) => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="praticas-especifica">
+  <div class="pratica-especifica">
 
     <div class="section">
       <div class="container">
@@ -176,7 +176,6 @@
       listarPraticasEspecificas() {
         this.$http.get('http://localhost:3000/praticaespecifica').then((req) => {
 
-          // adiciona os itens das praticas especificas p/ a lista de praticas especificas
           this.praticasEspecificas = req.data;
         });
 
@@ -185,7 +184,6 @@
       listarMetasEspecificas() {
         this.$http.get('http://localhost:3000/metaespecifica').then((req) => {
 
-          // adiciona os itens das metas especificas p/ a lista de metas especificas
           for (let i = 0; i < req.data.length; i++) {
             this.listaMetasEspeficica.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -195,7 +193,6 @@
       listarProdutosTrabalho() {
         this.$http.get('http://localhost:3000/produtotrabalho').then((req) => {
 
-          // adiciona os itens dos produtos de trabalhos p/ a lista de produtos de trabalho
           for (let i = 0; i < req.data.length; i++) {
             this.listaProdutosTrabalho.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
@@ -204,7 +201,6 @@
 
       adicionar() {
 
-        // Está editando?
         if (this.editando === true) {
 
           if (this.validarFormulario) {
@@ -215,7 +211,7 @@
             console.log('inválido');
           }
 
-        } else { // Está inserindo
+        } else {
 
           if (this.validarFormulario) {
 
@@ -231,10 +227,8 @@
             resource.save(data).then((response) => {
               console.log('success: ',response); // success callback
 
-              // chama o método para atualizar a lista de praticas especificas
               this.listarPraticasEspecificas();
 
-              // limpa o formulário
               this.limparFormulario();
 
             }, (response) => {
@@ -300,10 +294,8 @@
         this.$http.put('http://localhost:3000/praticaespecifica/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
-            // chama o método para atualizar a lista de praticas especificas
             this.listarPraticasEspecificas();
 
-            // limpa o formulário
             this.limparFormulario();
 
           }, (response) => {
@@ -323,7 +315,6 @@
           // success callback
           console.log('deletado')
 
-          // chama o método para atualizar a lista de praticas especificas
           this.listarPraticasEspecificas();
 
         }, (response) => {
