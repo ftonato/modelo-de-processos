@@ -19,6 +19,10 @@
             <a>Modelo</a>
           </router-link>
 
+          <router-link active-class="active" tag="li" to="/area-processo">
+            <a>Área Processo</a>
+          </router-link>
+
           <router-link active-class="active" tag="li" to="/meta-generica">
             <a>Meta Genérica</a>
           </router-link>
