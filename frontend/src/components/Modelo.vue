@@ -53,36 +53,6 @@
               </div>
 
               <div class="form-group">
-                <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Metas Genericas</label>
-                </div>
-                <div class="col-sm-10">
-
-                  <select class="form-control" name="metas_genericas" id="metas_genericas" v-model="novoModelo.metasGen" multiple>
-                    <option v-for="option in listaMetasGen" v-bind:value="option.value">
-                      {{ option.text }}
-                    </option>
-                  </select>
-
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="col-sm-2">
-                  <label for="area_processo" class="control-label">Area Processo</label>
-                </div>
-                <div class="col-sm-10">
-
-                  <select class="form-control" name="area_processo" id="area_processo" v-model="novoModelo.areaProcesso" multiple>
-                    <option v-for="option in listaAreaProcesso" v-bind:value="option.value">
-                      {{ option.text }}
-                    </option>
-                  </select>
-
-                </div>
-              </div>
-
-              <div class="form-group">
                 <div class="col-sm-offset-8 col-sm-4 text-right">
                   <button v-show="editando" v-on:click.prevent="cancelarEdicao()" type="button" class="btn btn-default">Cancelar</button>
                   <button type="submit" class="btn btn-primary">Salvar</button>
@@ -137,15 +107,10 @@
       return {
         name: 'Lista de Modelos',
         modelos: [],
-        listaMetasGen: [],
-        listaAreaProcesso: [],
         novoModelo: {
           sigla: '',
           nome: '',
-          descricao: '',
-          metasGen: [],
-          areaProcesso: [],
-        },
+          descricao: '',        },
         editModelo: {
           id: '',
         },
@@ -154,8 +119,6 @@
     },
     mounted() {
       this.listarModelos();
-      this.listarMetasGenericas();
-      this.listarAreaProcesso();
     },
     computed: {
       validarModelo() {
@@ -183,26 +146,6 @@
 
       },
 
-      listarMetasGenericas() {
-        this.$http.get('http://localhost:3000/metasgenericas').then((req) => {
-
-          // adiciona os itens das metas genericas p/ a lista de metas genericas
-          for (let i = 0; i < req.data.length; i++) {
-            this.listaMetasGen.push({ text: req.data[i].nome , 'value': req.data[i].id });
-          }
-        });
-      },
-
-      listarAreaProcesso() {
-        this.$http.get('http://localhost:3000/areaprocesso').then((req) => {
-
-          // adiciona os itens das metas genericas p/ a lista de metas genericas
-          for (let i = 0; i < req.data.length; i++) {
-            this.listaAreaProcesso.push({ text: req.data[i].nome , 'value': req.data[i].id });
-          }
-        });
-      },
-
       adicionar() {
 
         // Está editando?
@@ -225,8 +168,6 @@
               'sigla': this.novoModelo.sigla,
               'nome': this.novoModelo.nome,
               'descricao': this.novoModelo.descricao,
-              'metasGen': this.novoModelo.metasGen,
-              'areaProc': this.novoModelo.areaProcesso,
             };
 
             resource.save(data).then((response) => {
@@ -256,30 +197,11 @@
         let _nome = modelo.nome;
         let _descricao = modelo.descricao;
 
-        let _metasGen = modelo.metasGen;
-        //let listaMetasGenericas = [];
-
-        for(let val in _metasGen) {
-          //listaMetasGenericas.push(val);
-          this.novoModelo.metasGen.push(val);
-        }
-
-        let _areaProc = modelo.areaProc;
-        //let listaAreasProcessos = [];
-
-        for(let val in _areaProc) {
-          //listaAreasProcessos.push(val);
-          this.novoModelo.areaProcesso.push(val);
-        }
-
         this.editando = true;
 
         this.novoModelo.sigla = _sigla;
         this.novoModelo.nome = _nome;
         this.novoModelo.descricao = _descricao;
-
-        //this.novoModelo.metasGen = _metasGen;
-        //this.novoModelo.areaProcesso = _areaProc;
 
         this.editModelo.id = _id;
 
@@ -289,8 +211,6 @@
         this.novoModelo.sigla = '';
         this.novoModelo.nome = '';
         this.novoModelo.descricao = '';
-        this.novoModelo.metasGen = [];
-        this.novoModelo.areaProcesso = [];
         this.editModelo.id = '';
 
         this.editando = false;
@@ -303,8 +223,6 @@
           'sigla': this.novoModelo.sigla,
           'nome': this.novoModelo.nome,
           'descricao': this.novoModelo.descricao,
-          'metasGen': this.novoModelo.metasGen,
-          'areaProc': this.novoModelo.areaProcesso,
         };
 
         console.log('/modelo/'+_id, data);
@@ -348,8 +266,6 @@
         this.novoModelo.sigla = '';
         this.novoModelo.nome = '';
         this.novoModelo.descricao = '';
-        this.novoModelo.metasGen = [];
-        this.novoModelo.areaProcesso = [];
       },
 
       downloadModelo(id) {
