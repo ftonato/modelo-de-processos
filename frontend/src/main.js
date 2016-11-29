@@ -7,6 +7,7 @@ import App from './App.vue'
 import Navbar from './components/Navbar.vue';
 import Categoria from './components/Categoria.vue';
 import Modelo from './components/Modelo.vue';
+import AreaProcesso from './components/AreaProcesso.vue';
 import MetaGenerica from './components/MetaGenerica.vue';
 import NivelMaturidade from './components/NivelMaturidade.vue';
 import NivelCapacidade from './components/NivelCapacidade.vue';
@@ -29,6 +30,13 @@ const router = new VueRouter({
         path: '/',
         components: {
           default: Index,
+          sidebar: Navbar
+        }
+      },
+      {
+        path: '/area-processo',
+        components: {
+          default: AreaProcesso,
           sidebar: Navbar
         }
       },

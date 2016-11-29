@@ -5,7 +5,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>Meta Genérica</h1>
+            <h1>Área de Processo</h1>
             <hr>
             <form class="form-horizontal" role="form" v-on:submit.prevent="adicionar">
               <div class="form-group">
@@ -15,12 +15,12 @@
                 <div class="col-sm-10">
 
                   <ul class="edit" v-show="editando">
-                    <li class="label label-success">Editando <strong>ID: </strong> <input class="input-fail" type="text" v-model="editMetaGenerica.id"> </li>
+                    <li class="label label-success">Editando <strong>ID: </strong> <input class="input-fail" type="text" v-model="editAreaProcesso.id"> </li>
                   </ul>
 
-                  <input type="text" class="form-control" id="sigla" placeholder="Sigla" v-model="novoMetaGenerica.sigla">
+                  <input type="text" class="form-control" id="sigla" placeholder="Sigla" v-model="novoAreaProcesso.sigla">
 
-                  <ul class="errors" v-show="!validarMetaGenerica.sigla">
+                  <ul class="errors" v-show="!validarAreaProcesso.sigla">
                     <li class="label label-danger">Sigla não pode ser vazio.</li>
                   </ul>
 
@@ -31,9 +31,9 @@
                   <label for="nome" class="control-label">Nome</label>
                 </div>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="nome" placeholder="Nome" v-model="novoMetaGenerica.nome">
+                  <input type="text" class="form-control" id="nome" placeholder="Nome" v-model="novoAreaProcesso.nome">
 
-                  <ul class="errors" v-show="!validarMetaGenerica.nome">
+                  <ul class="errors" v-show="!validarAreaProcesso.nome">
                     <li class="label label-danger">Nome não pode ser vazio.</li>
                   </ul>
 
@@ -44,9 +44,9 @@
                   <label for="descricao" class="control-label">Descrição</label>
                 </div>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" id="descricao" placeholder="Descrição" v-model="novoMetaGenerica.descricao">
+                  <input type="text" class="form-control" id="descricao" placeholder="Descrição" v-model="novoAreaProcesso.descricao">
 
-                  <ul class="errors" v-show="!validarMetaGenerica.descricao">
+                  <ul class="errors" v-show="!validarAreaProcesso.descricao">
                     <li class="label label-danger">Descrição não pode ser vazio.</li>
                   </ul>
                 </div>
@@ -56,7 +56,7 @@
                   <label for="modelo" class="control-label">Modelo</label>
                 </div>
                 <div class="col-sm-10">
-                  <select class="form-control" name="modelo" id="modelo" v-model="novoMetaGenerica.modelo">
+                  <select class="form-control" name="modelo" id="modelo" v-model="novoAreaProcesso.modelo">
                     <option v-for="option in listModelos" v-bind:value="option.value">
                       {{ option.text }}
                     </option>
@@ -65,11 +65,23 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-2">
-                  <label for="metas_genericas" class="control-label">Nível de Capacidade</label>
+                  <label for="metas_genericas" class="control-label">Nível de Maturidade</label>
                 </div>
                 <div class="col-sm-10">
-                  <select class="form-control" name="nivel_capacidade" id="nivel_capacidade" v-model="novoMetaGenerica.nivelCap">
-                    <option v-for="option in listniveisCap" v-bind:value="option.value">
+                  <select class="form-control" name="nivel_maturidade" id="nivel_maturidade" v-model="novoAreaProcesso.nivelMatu">
+                    <option v-for="option in listNivelMat" v-bind:value="option.value">
+                      {{ option.text }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-2">
+                  <label for="metas_genericas" class="control-label">Categoria</label>
+                </div>
+                <div class="col-sm-10">
+                  <select class="form-control" name="categoria" id="categoria" v-model="novoAreaProcesso.categoria">
+                    <option v-for="option in listCategorias" v-bind:value="option.value">
                       {{ option.text }}
                     </option>
                   </select>
@@ -103,14 +115,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="meta in metasGenericas">
+                <tr v-for="meta in areasProcessos">
                   <td scope="row">{{ meta.id }}</td>
                   <td scope="row">{{ meta.nome }}</td>
                   <td scope="row">{{ meta.sigla }}</td>
                   <td scope="row">{{ meta.descricao }}</td>
                   <td class="text-center">
-                    <a v-on:click.prevent="editarMetaGenerica(meta)" href="#" title="Editar Meta Genérica"><i class="fa fa-pencil"></i></a>
-                    <a v-show="!editando" v-on:click.prevent="removerMetaGenerica(meta)" href="#" title="Deletar Meta Genérica"><i class="fa fa-trash"></i></a>
+                    <a v-on:click.prevent="editarAreaProcesso(meta)" href="#" title="Editar Área de Processo"><i class="fa fa-pencil"></i></a>
+                    <a v-show="!editando" v-on:click.prevent="removerAreaProcesso(meta)" href="#" title="Deletar Área de Processo"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
               </tbody>
@@ -127,18 +139,20 @@
   export default {
     data () {
       return {
-        name: 'Lista de Metas Genéricas',
-        metasGenericas: [],
-        listniveisCap: [],
+        name: 'Lista de Áreas de Processo',
+        areasProcessos: [],
         listModelos: [],
-        novoMetaGenerica: {
+        listCategorias: [],
+        listNivelMat: [],
+        novoAreaProcesso: {
           sigla: '',
           nome: '',
           descricao: '',
+          nivelMatu: [],
           modelo: [],
-          nivelCap: []
+          categoria: []
         },
-        editMetaGenerica: {
+        editAreaProcesso: {
           id: '',
         },
         editando: false,
@@ -146,45 +160,54 @@
     },
     mounted() {
       this.listarMetasGenericas();
-      this.loadAllNiveisCap();
       this.loadAllModelos();
+      this.loadAllCategorias();
+      this.loadAllNiveisMatu();
     },
     computed: {
-      validarMetaGenerica() {
+      validarAreaProcesso() {
         return {
-          sigla: !!this.novoMetaGenerica.sigla.trim(),
-          nome: !!this.novoMetaGenerica.nome.trim(),
-          descricao: !!this.novoMetaGenerica.descricao.trim(),
+          sigla: !!this.novoAreaProcesso.sigla.trim(),
+          nome: !!this.novoAreaProcesso.nome.trim(),
+          descricao: !!this.novoAreaProcesso.descricao.trim(),
         }
       },
       validarFormulario() {
-        let validarNovoMetaGenerica = this.validarMetaGenerica
-        return Object.keys(validarNovoMetaGenerica).every(function (key) {
-          return validarNovoMetaGenerica[key]
+        let validarNovoAreaProcesso = this.validarAreaProcesso
+        return Object.keys(validarNovoAreaProcesso).every(function (key) {
+          return validarNovoAreaProcesso[key]
         })
       }
     },
     methods: {
 
       listarMetasGenericas() {
-        this.$http.get('http://localhost:3000/metasgenericas').then((req) => {
+        this.$http.get('http://localhost:3000/areaprocesso').then((req) => {
           // adiciona os itens das metas p/ a lista de metas genéricas
-          this.metasGenericas = req.data;
+          this.areasProcessos = req.data;
         });
       },
+
+      // Carrega dados para combobox
       loadAllModelos() {
         this.$http.get('http://localhost:3000/modelo').then((req) => {
-          // adiciona os niveis de modelo p/ a lista
+          // remodela os dados dos os modelos para o select
           for (let i = 0; i < req.data.length; i++) {
             this.listModelos.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
         });
       },
-      loadAllNiveisCap() {
-        this.$http.get('http://localhost:3000/nivelcapacidade').then((req) => {
-          // adiciona os niveis de capacidade p/ a lista de niveis de capacidade
+      loadAllCategorias() {
+        this.$http.get('http://localhost:3000/categoria').then((req) => {
           for (let i = 0; i < req.data.length; i++) {
-            this.listniveisCap.push({ text: req.data[i].nome , 'value': req.data[i].id });
+            this.listCategorias.push({ text: req.data[i].nome , 'value': req.data[i].id });
+          }
+        });
+      },
+      loadAllNiveisMatu() {
+        this.$http.get('http://localhost:3000/nivelmaturidade').then((req) => {
+          for (let i = 0; i < req.data.length; i++) {
+            this.listNivelMat.push({ text: req.data[i].nome , 'value': req.data[i].id });
           }
         });
       },
@@ -196,7 +219,7 @@
 
           if (this.validarFormulario) {
 
-            this.atualizarMetaGenerica();
+            this.atualizarAreaProcesso();
 
           } else {
             console.log('inválido');
@@ -206,13 +229,14 @@
 
           if (this.validarFormulario) {
 
-            let resource = this.$resource('http://localhost:3000/metasgenericas');
+            let resource = this.$resource('http://localhost:3000/areaprocesso');
             let data = {
-              'sigla': this.novoMetaGenerica.sigla,
-              'nome': this.novoMetaGenerica.nome,
-              'descricao': this.novoMetaGenerica.descricao,
-              'modelo': this.novoMetaGenerica.modelo,
-              'nivelCap': this.novoMetaGenerica.nivelCap,
+              'sigla': this.novoAreaProcesso.sigla,
+              'nome': this.novoAreaProcesso.nome,
+              'descricao': this.novoAreaProcesso.descricao,
+              'modelo': this.novoAreaProcesso.modelo,
+              'nivelMatu': this.novoAreaProcesso.nivelMatu,
+              'categoria': this.novoAreaProcesso.categoria,
             };
 
             resource.save(data).then((response) => {
@@ -236,44 +260,41 @@
 
       },
 
-      editarMetaGenerica(meta) {
+      editarAreaProcesso(meta) {
         this.editando = true;
 
-        this.novoMetaGenerica.sigla = meta.sigla;
-        this.novoMetaGenerica.nome = meta.nome;
-        this.novoMetaGenerica.descricao = meta.descricao;
-        this.novoMetaGenerica.modelo = meta.modelo;
-        this.novoMetaGenerica.nivelCap = meta.nivelCap;
-        
-        this.editMetaGenerica.id = meta.id;
+        this.novoAreaProcesso.sigla =  meta.sigla;
+        this.novoAreaProcesso.nome = meta.nome;
+        this.novoAreaProcesso.descricao = meta.descricao;
+        this.novoAreaProcesso.modelo = meta.modelo;
+        this.novoAreaProcesso.nivelMatu = meta.nivelMatu;
+        this.novoAreaProcesso.categoria = meta.categoria;
 
+        this.editAreaProcesso.id = meta.id;
       },
 
       cancelarEdicao() {
-        this.novoMetaGenerica.sigla = '';
-        this.novoMetaGenerica.nome = '';
-        this.novoMetaGenerica.descricao = '';
-        this.editMetaGenerica.id = '';
-        this.editMetaGenerica.modelo = [];
-        this.editMetaGenerica.nivelCap = [];
-
+        this.editAreaProcesso.id = '';
         this.editando = false;
+
+        limparFormulario()
       },
 
-      atualizarMetaGenerica() {
+      atualizarAreaProcesso() {
 
-        let _id = this.editMetaGenerica.id.trim();
+        let _id = this.editAreaProcesso.id.trim();
         let data = {
-          'sigla': this.novoMetaGenerica.sigla,
-          'nome': this.novoMetaGenerica.nome,
-          'descricao': this.novoMetaGenerica.descricao,
-          'modelo': this.novoMetaGenerica.modelo,
-          'nivelCap': this.novoMetaGenerica.nivelCap,
+          'sigla': this.novoAreaProcesso.sigla,
+          'nome': this.novoAreaProcesso.nome,
+          'descricao': this.novoAreaProcesso.descricao,
+          'modelo': this.novoAreaProcesso.modelo,
+          'nivelMatu': this.novoAreaProcesso.nivelMatu,
+          'categoria': this.novoAreaProcesso.categoria,
         };
 
-        console.log('/metasgenericas/'+_id, data);
+        console.log('/areaprocesso/'+_id, data);
 
-        this.$http.put('http://localhost:3000/metasgenericas/'+_id, data).then((response) => {
+        this.$http.put('http://localhost:3000/areaprocesso/'+_id, data).then((response) => {
             console.log('success: ',response); // success callback
 
             // chama o método para atualizar a lista de metas genéricas
@@ -290,9 +311,9 @@
         this.editando = false;
       },
 
-      removerMetaGenerica(meta) {
+      removerAreaProcesso(meta) {
 
-        let resource = this.$resource('http://localhost:3000/metasgenericas{/id}');
+        let resource = this.$resource('http://localhost:3000/areaprocesso{/id}');
         let _id = meta.id.trim();
 
         resource.delete({id: _id}).then((response) => {
@@ -309,11 +330,12 @@
       },
 
       limparFormulario() {
-        this.novoMetaGenerica.sigla = '';
-        this.novoMetaGenerica.nome = '';
-        this.novoMetaGenerica.descricao = '';
-        this.novoMetaGenerica.modelo = [];
-        this.novoMetaGenerica.nivelCap = [];
+        this.novoAreaProcesso.sigla = '';
+        this.novoAreaProcesso.nome = '';
+        this.novoAreaProcesso.descricao = '';
+        this.novoAreaProcesso.nivelMatu = [];
+        this.novoAreaProcesso.modelo = [];
+        this.novoAreaProcesso.categoria = [];
       }
     }
   }
