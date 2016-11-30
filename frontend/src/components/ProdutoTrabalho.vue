@@ -7,7 +7,7 @@
           <div class="col-md-12">
             <h1>Produto de Trabalho</h1>
             <hr>
-            <form class="form-horizontal" role="form" v-on:submit.prevent="adicionarProdutoTrabalho">
+            <form class="form-horizontal" role="form" enctype="multipart/form-data" v-on:submit.prevent="adicionarProdutoTrabalho">
               <div class="form-group">
                 <div class="col-sm-2">
                   <label for="nome" class="control-label">Nome</label>
@@ -24,6 +24,14 @@
                     <li class="label label-danger">Nome não pode ser vazio.</li>
                   </ul>
 
+                </div>
+              </div>
+              <div class="form-group" v-show="editando">
+                <div class="col-sm-2">
+                  <label for="template" class="control-label">Template</label>
+                </div>
+                <div class="col-sm-10">
+                  <input type="file" class="form-control file" id="template" placeholder="Template">
                 </div>
               </div>
               <div class="form-group">
@@ -56,6 +64,7 @@
                   <td scope="row">{{ produto.id }}</td>
                   <td scope="row">{{ produto.nome }}</td>
                   <td class="text-center">
+                    <a v-show="produto.template" v-on:click.prevent="downloadTemplate(produto.id)" target="_blank" title="Baixar Template"><i class="fa fa-download"></i></a>
                     <a v-on:click.prevent="editarProdutoTrabalho(produto)" href="#" title="Editar Produto de Trabalho"><i class="fa fa-pencil"></i></a>
                     <a v-show="!editando" v-on:click.prevent="removerProdutoTrabalho(produto)" href="#" title="Deletar Produto de Trabalho"><i class="fa fa-trash"></i></a>
                   </td>
@@ -118,7 +127,15 @@
 
           if (this.validarFormulario) {
 
-            this.atualizarProdutoTrabalho();
+            let hasFile = $('input[type=file]')[0].files[0] !== undefined;
+
+            if (hasFile) {
+
+              this.fileUpload(this.editProdutoTrabalho.id)
+            } else {
+              this.atualizarProdutoTrabalho();
+            }
+
 
           } else {
             console.log('inválido');
@@ -165,6 +182,8 @@
         this.novoProdutoTrabalho.nome = '';
         this.editProdutoTrabalho.id = '';
 
+        $('#template').val('');
+
         this.editando = false;
       },
 
@@ -209,7 +228,52 @@
 
       limparFormulario() {
         this.novoProdutoTrabalho.nome = '';
-      }
+        $('#template').val('');
+      },
+
+      downloadTemplate(id) {
+        window.open(`http://localhost:3000/produtotrabalho/${id}/template`);
+      },
+
+      fileUpload(id) {
+
+        let form = new FormData();
+        form.append('section', 'general');
+        form.append('action', 'previewImg');
+        form.append('template', $('input[type=file]')[0].files[0]);
+        form.append('nome', this.novoProdutoTrabalho.nome);
+
+        let settings = {
+          'async': true,
+          'crossDomain': true,
+          'url': 'http://localhost:3000/produtotrabalho/',
+          'method': 'PUT',
+          'headers': {
+            'cache-control': 'no-cache',
+            'postman-token': 'ffdca3b0-5133-dd34-3831-f8068b69ba6b'
+          },
+          'processData': false,
+          'contentType': false,
+          'mimeType': 'multipart/form-data',
+          'data': form
+        }
+
+        settings.url = `http://localhost:3000/produtotrabalho/${id}/template`
+
+        let vm = this;
+        $.ajax(settings).done(function (response) {
+          console.log('upload with sucess', response);
+
+          vm.listarProdutosTrabalho();
+          vm.limparFormulario();
+
+          vm.editando = false;
+        });
+
+
+
+      },
+
     },
 
   }
@@ -230,4 +294,8 @@
     border: none;
     background-color: transparent;
   }
+  input[type=file] {
+    font-size: 12px;
+  }
+
 </style>

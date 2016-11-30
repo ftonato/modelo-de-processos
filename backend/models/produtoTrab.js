@@ -62,7 +62,7 @@ module.exports = {
       });
     });
 
-    app.post(path + "/:key/template", upload.single('template'), function (req, res) {
+    app.put(path + "/:key/template", upload.single('template'), function (req, res) {
       ref.once('value', function (snap) {
         if (!snap.hasChild(req.params.key)) {
           res.status(404).send();
@@ -81,7 +81,7 @@ module.exports = {
 
           blobStream.on('finish', function () {
             const uploadedFile = 'https://storage.googleapis.com/objeto-relacional.appspot.com/' + req.params.key;
-            ref.child(req.params.key).update({ template: uploadedFile });
+            ref.child(req.params.key).update({ template: uploadedFile, nome: req.body.nome });
             res.status(200).send(uploadedFile);
           });
 
