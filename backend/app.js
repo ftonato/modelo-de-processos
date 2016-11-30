@@ -32,8 +32,12 @@ const gcs = gcloud.storage({
   keyFilename: './privateKey.json'
 });
 
+
+const jsonParser = bodyParser.json({limit:1024*1024*20, type:'application/json'});
 app.use(cors());
+app.use(jsonParser);
 app.use(bodyParser.json());
+
 
 // basicModel.js funciona com qualquer rota cujo objeto não faz refencia a nenhum outro,
 // assim podem realizar o init para vários objetos com o mesmo código
